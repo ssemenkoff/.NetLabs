@@ -13,6 +13,11 @@ namespace BinarySearchTree
             _comparer = comparer;
         }
 
+        public AVL()
+        {
+            _comparer = Comparer<T>.Default;
+        }
+
         public override string ToString()
         {
             return Root.ToString();
@@ -35,6 +40,7 @@ namespace BinarySearchTree
         }
 
         private void Remove(ref Node<T> node, T value) {
+            if (node == null) return;
             if (_comparer.Compare(node.Value, value) == 0)
             {
                 var min = Min(ref node);
@@ -49,6 +55,7 @@ namespace BinarySearchTree
             }
         }
 
+
         private Node<T> Min (ref Node<T> node) {
             if(node._left == null) {
                 return node;
@@ -56,6 +63,16 @@ namespace BinarySearchTree
                 return Min(ref node._left);
             }
         }
+
+        /*
+        private Node<T> RemoveMin (ref Node<T> node) {
+            if (node._left == null)
+                return node._right;
+            node._left = RemoveMin(ref node._left);
+            Balancer<T>.Balance(ref node);
+            return node;
+        }
+        */
 
         private void Add(ref Node<T> node, T value) {
             if(node == null) {
@@ -72,7 +89,7 @@ namespace BinarySearchTree
             Balancer<T>.Balance(ref node);
         }
 
-        public IEnumerable<T> preOrder()
+        public IEnumerable<T> PreOrder()
 		{
 			if (Root == null)
 				yield break;
@@ -80,15 +97,15 @@ namespace BinarySearchTree
 			yield return Root.Value;
 
 			if (Root._left != null)
-				foreach (T i in preOrder(Root._left))
+				foreach (T i in PreOrder(Root._left))
 					yield return i;
 
 			if (Root._right != null)
-				foreach (T i in preOrder(Root._right))
+				foreach (T i in PreOrder(Root._right))
 					yield return i;
 		}
 
-		private IEnumerable<T> preOrder(Node<T> node)
+		private IEnumerable<T> PreOrder(Node<T> node)
 		{
 			if (Root == null)
 				yield break;
@@ -96,75 +113,75 @@ namespace BinarySearchTree
             yield return node.Value;
 
 			if (Root._left != null)
-				foreach (T i in preOrder(node._left))
+				foreach (T i in PreOrder(node._left))
 					yield return i;
 
 			if (Root._right != null)
-				foreach (T i in preOrder(node._right))
+				foreach (T i in PreOrder(node._right))
 					yield return i;
 		}
 
-		public IEnumerable<T> postOrder()
+		public IEnumerable<T> PostOrder()
 		{
 			if (Root == null)
 				yield break;
             
 			if (Root._left != null)
-				foreach (T i in postOrder(Root._left))
+				foreach (T i in PostOrder(Root._left))
 					yield return i;
 
 			if (Root._right != null)
-				foreach (T i in postOrder(Root._right))
+				foreach (T i in PostOrder(Root._right))
 					yield return i;
             
 			yield return Root.Value;
 		}
 
-		private IEnumerable<T> postOrder(Node<T> node)
+		private IEnumerable<T> PostOrder(Node<T> node)
 		{
 			if (Root == null)
 				yield break;
 
 			if (Root._left != null)
-				foreach (T i in postOrder(node._left))
+				foreach (T i in PostOrder(node._left))
 					yield return i;
 
 			if (Root._right != null)
-				foreach (T i in postOrder(node._right))
+				foreach (T i in PostOrder(node._right))
 					yield return i;
 
 			yield return node.Value;
 		}
 
-		public IEnumerable<T> inOrder()
+		public IEnumerable<T> InOrder()
 		{
 			if (Root == null)
 				yield break;
 
 			if (Root._left != null)
-				foreach (T i in inOrder(Root._left))
+				foreach (T i in InOrder(Root._left))
 					yield return i;
 
 			yield return Root.Value;
 
 			if (Root._right != null)
-				foreach (T i in inOrder(Root._right))
+				foreach (T i in InOrder(Root._right))
 					yield return i;
 		}
 
-		private IEnumerable<T> inOrder(Node<T> node)
+		private IEnumerable<T> InOrder(Node<T> node)
 		{
 			if (Root == null)
 				yield break;
 
 			if (Root._left != null)
-				foreach (T i in inOrder(node._left))
+				foreach (T i in InOrder(node._left))
 					yield return i;
             
 			yield return node.Value;
 
 			if (Root._right != null)
-				foreach (T i in inOrder(node._right))
+				foreach (T i in InOrder(node._right))
 					yield return i;
 		}
     }
